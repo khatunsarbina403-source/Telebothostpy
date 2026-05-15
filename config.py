@@ -1,4 +1,4 @@
 import os
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+BOT_TOKEN = os.getenv("8989139227:AAEFULzmAgPYNOLtKMnaKek2W2-Pr1LzXA8")
+CHAT_ID = os.getenv("7947347734")
